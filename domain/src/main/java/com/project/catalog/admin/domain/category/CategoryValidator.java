@@ -21,8 +21,6 @@ public class CategoryValidator extends Validator {
         checkNameConstraint();
     }
 
-
-
     private void checkNameConstraint() {
 
         String nameCategory = category.getName();

@@ -54,12 +54,8 @@ public class Category extends AggregateRoot<CategoryID> {
         this.description = description;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public Instant getCreatedAt() {
@@ -79,5 +75,23 @@ public class Category extends AggregateRoot<CategoryID> {
     @Override
     public void validate(final ValidationHandler handler) {
         new CategoryValidator(this, handler).validate();
+    }
+
+    public Category deactivate() {
+        if (isActive()) {
+            active = false;
+            updatedAt = Instant.now();
+            deletedAt = Instant.now();
+        }
+        return this;
+    }
+
+    public Category activate() {
+        if (!isActive()) {
+            active = true;
+            updatedAt = Instant.now();
+            deletedAt = null;
+        }
+        return this;
     }
 }
