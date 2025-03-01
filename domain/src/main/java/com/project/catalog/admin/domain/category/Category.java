@@ -42,16 +42,8 @@ public class Category extends AggregateRoot<CategoryID> {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Boolean isActive() {
@@ -92,6 +84,17 @@ public class Category extends AggregateRoot<CategoryID> {
             updatedAt = Instant.now();
             deletedAt = null;
         }
+        return this;
+    }
+
+    public Category update(final String name, final String description, final boolean isActive) {
+        if (isActive)
+            activate();
+        else
+            deactivate();
+        this.name = name;
+        this.description = description;
+        this.updatedAt = Instant.now();
         return this;
     }
 }
