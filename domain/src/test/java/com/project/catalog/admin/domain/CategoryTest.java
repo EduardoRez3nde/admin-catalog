@@ -28,22 +28,127 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenAnInvalidEmptyName_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
+    public void givenAnInvalidNullName_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
 
-        final var expectedName = "  ";
-        final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' should not be empty";
-        final var expectedDescription = "A categoria mais assistida";
-        final var expectedIsActive = true;
+        final String expectedName = null;
+        final int expectedErrorCount = 1;
+        final String expectedErrorMessage = "'name' should not be null";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
 
-        final var actualCategory =
+        final Category actualCategory =
                 Category.newCategory(expectedName, expectedDescription, expectedIsActive);
 
-        final var actualException =
+        final DomainException actualException =
                 Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
 
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
+    }
+
+    @Test
+    public void givenAnInvalidEmptyName_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
+
+        final String expectedName = "  ";
+        final int expectedErrorCount = 1;
+        final String expectedErrorMessage = "'name' should not be empty";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+
+        final Category actualCategory =
+                Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        final DomainException actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
+    }
+
+    @Test
+    public void givenAnInvalidNameLengthLessThan3_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
+
+        final String expectedName = "Fi ";
+        final int expectedErrorCount = 1;
+        final String expectedErrorMessage = "'name' must be between 3 and 255 characters";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+
+        final Category actualCategory =
+                Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        final DomainException actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
+    }
+
+    @Test
+    public void givenAnInvalidNameLengthMoreThan255_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
+
+        final String expectedName = """
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. """;
+        final int expectedErrorCount = 1;
+        final String expectedErrorMessage = "'name' must be between 3 and 255 characters";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+
+        final Category actualCategory =
+                Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        final DomainException actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
+    }
+
+    @Test
+    public void givenAValidEmptyDescription_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
+
+        final String expectedName = "Filmes";
+        final int expectedErrorCount = 1;
+        final String expectedDescription = " ";
+        final boolean expectedIsActive = true;
+
+        Category expectedCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        Assertions.assertDoesNotThrow(() -> expectedCategory.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertNotNull(expectedCategory);
+        Assertions.assertNotNull(expectedCategory.getId());
+        Assertions.assertNotNull(expectedCategory.getCreatedAt());
+        Assertions.assertNotNull(expectedCategory.getUpdatedAt());
+        Assertions.assertNull(expectedCategory.getDeletedAt());
+        Assertions.assertEquals(expectedName, expectedCategory.getName());
+        Assertions.assertEquals(expectedDescription, expectedCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, expectedCategory.getActive());
+    }
+
+    @Test
+    public void givenAValidFalseIsActive_whenCallNewCategoryAndValidate_thenShouldReceiveError() {
+
+        final String expectedName = "Filmes";
+        final int expectedErrorCount = 1;
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = false;
+
+        Category expectedCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        Assertions.assertDoesNotThrow(() -> expectedCategory.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertNotNull(expectedCategory);
+        Assertions.assertNotNull(expectedCategory.getId());
+        Assertions.assertNotNull(expectedCategory.getCreatedAt());
+        Assertions.assertNotNull(expectedCategory.getUpdatedAt());
+        Assertions.assertNotNull(expectedCategory.getDeletedAt());
+        Assertions.assertEquals(expectedName, expectedCategory.getName());
+        Assertions.assertEquals(expectedDescription, expectedCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, expectedCategory.getActive());
     }
 
 }
