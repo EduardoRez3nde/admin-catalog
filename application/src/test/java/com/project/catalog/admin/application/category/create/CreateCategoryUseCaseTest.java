@@ -2,7 +2,6 @@ package com.project.catalog.admin.application.category.create;
 
 import com.project.catalog.admin.application.UseCaseTest;
 import com.project.catalog.admin.domain.category.CategoryGateway;
-import com.project.catalog.admin.domain.exceptions.DomainException;
 import com.project.catalog.admin.domain.validation.handler.Notification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -77,11 +76,11 @@ public class CreateCategoryUseCaseTest extends UseCaseTest {
         final CreateCategoryCommand command =
                 CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
 
-        final DomainException actualException =
-                Assertions.assertThrows(DomainException.class, () -> useCase.execute(command));
+        final Notification notification = useCase.execute(command).getLeft();
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+
         verify(categoryGateway, times(0)).create(any());
     }
 

@@ -38,6 +38,42 @@ public class Category extends AggregateRoot<CategoryID> {
         return new Category(id, name, description, active, Instant.now(), Instant.now(), deletedAt);
     }
 
+    public static Category with(
+            final CategoryID anId,
+            final String name,
+            final String description,
+            final boolean active,
+            final Instant createdAt,
+            final Instant updatedAt,
+            final Instant deletedAt
+    ) {
+        return new Category(
+                anId,
+                name,
+                description,
+                active,
+                createdAt,
+                updatedAt,
+                deletedAt
+        );
+    }
+
+    public static Category with(final Category aCategory) {
+        return with(
+                aCategory.getId(),
+                aCategory.name,
+                aCategory.description,
+                aCategory.isActive(),
+                aCategory.createdAt,
+                aCategory.updatedAt,
+                aCategory.deletedAt
+        );
+    }
+
+    public static Category deepCopy(Category category) {
+        return Category.with(category);
+    }
+
     public String getName() {
         return name;
     }
