@@ -37,7 +37,7 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
     }
 
     private Supplier<DomainException> notFound(final CategoryID id) {
-        return () -> DomainException.with(Error.from("Category with ID %d, was not found.", id));
+        return () -> DomainException.with(Error.from("Category with ID %s, was not found.", id));
     }
 
     private Either<Notification, UpdateCategoryOutput> update(final Category category) {

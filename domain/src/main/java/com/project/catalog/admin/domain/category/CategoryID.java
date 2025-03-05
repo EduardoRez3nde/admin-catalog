@@ -46,4 +46,9 @@ public class CategoryID extends Identifier {
     public String getValue() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return id;
+    }
 }
