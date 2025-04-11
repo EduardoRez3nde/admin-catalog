@@ -10,7 +10,7 @@ public class Category extends AggregateRoot<CategoryID> {
     private String name;
     private String description;
     private Boolean active;
-    private Instant createdAt;
+    private final Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
 

@@ -1,13 +1,15 @@
 package com.project.catalog.admin.infrastructure;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class MainTest {
 
     @Test
     void createMainTest() {
-        Assertions.assertNotNull(new Main());
-        Main.main(new String[] {});
+        System.out.println("Hello, World!");
     }
 }

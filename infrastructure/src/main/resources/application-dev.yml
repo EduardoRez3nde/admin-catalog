@@ -1,0 +1,4 @@
+postgresql:
+  username: postgres
+  password: 1234
+  database: admin_catalog_videos

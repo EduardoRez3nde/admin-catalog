@@ -1,0 +1,43 @@
+
+#  Roda na porta 8080.
+#  Ative a compactação para economizar largura de banda e melhorar a performance.
+#  Use Undertow como servidor, otimizando threads para melhor desempenho.
+# https://vladmihalcea.com/why-you-should-always-use-hibernate-connection-provider_disables_autocommit-for-resource-local-jpa-transactions/
+# https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+
+
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  undertow:
+    threads:
+      worker: 10
+      io: 2
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc://postgresql://localhost:5432/${postgresql.database}
+    username: ${postgresql.username}
+    password: ${postgresql.password}
+    hikari:
+      auto-commit: false
+      connection-timeout: 250
+      max-lifetime: 600000
+      maximum-pool-size: 20
+      minimum-idle: 10
+      pool-name: master
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      "[hibernate.dialect]": org.hibernate.dialect.PostgreSQLDialect
+      "[hibernate.generate_statistics]": false
+      "[hibernate.connection.provider_disables_autocommit]": true
+

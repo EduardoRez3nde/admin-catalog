@@ -1,0 +1,10 @@
+postgresql:
+  username: ${DATABASE_POSTGRES_USERNAME:postgres}
+  password: ${DATABASE_POSTGRES_PASSWORD:1234}
+  url: ${DATABASE_POSTGRES_URL}
+  database: admin_catalog_videos
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
